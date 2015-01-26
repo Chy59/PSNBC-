@@ -1,11 +1,17 @@
 #include "Game.h"
 
+#include<Shape.h>
+
 Game::Game()
 {
     window.create(VideoMode(800, 600), "PSNBC");
     window.setFramerateLimit(60);
 
-    entityManager.addEntity();
+    MyShape* shape = new MyShape(0, 0);
+    entityManager.addEntity(shape);
+
+    mapManager.setEntityManager(&entityManager);
+    mapManager.generateMap();
 }
 
 void Game::update()
@@ -34,4 +40,9 @@ void Game::update()
 
         entityManager.afterDraw();
     }
+}
+
+EntityManager Game::getEntityManager()
+{
+    return entityManager;
 }

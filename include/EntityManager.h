@@ -1,7 +1,7 @@
 #ifndef ENTITYMANAGER_H
 #define ENTITYMANAGER_H
 
-#include <Shape.h>
+#include <Entity.h>
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -13,7 +13,7 @@ class EntityManager
     public:
         EntityManager();
         vector<Entity*> entities;
-        void addEntity();
+        void addEntity(Entity* entity);
         void beforeDraw(Time frameTime);
         void draw(RenderWindow& window);
         void afterDraw();

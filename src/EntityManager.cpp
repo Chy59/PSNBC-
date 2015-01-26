@@ -4,10 +4,9 @@ EntityManager::EntityManager()
 {
 }
 
-void EntityManager::addEntity()
+void EntityManager::addEntity(Entity* entity)
 {
-    MyShape* shape = new MyShape(0, 0);
-    entities.push_back(shape);
+    entities.push_back(entity);
 }
 
 void EntityManager::beforeDraw(Time frameTime)

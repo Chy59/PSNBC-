@@ -3,8 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 #include <AnimatedSprite.hpp>
+#include <iostream>
 
 using namespace sf;
+using namespace std;
 
 class Entity
 {
