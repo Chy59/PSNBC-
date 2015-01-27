@@ -2,11 +2,6 @@
 #define ENTITYMANAGER_H
 
 #include <Entity.h>
-#include <SFML/Graphics.hpp>
-#include <iostream>
-
-using namespace sf;
-using namespace std;
 
 class EntityManager
 {
@@ -16,6 +11,7 @@ class EntityManager
         void beforeDraw(Time frameTime);
         void draw(RenderWindow& window);
         void afterDraw();
+        vector<Entity*> getEntities();
     protected:
     private:
         vector<Entity*> m_entities;

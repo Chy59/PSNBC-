@@ -1,17 +1,17 @@
 #include "Game.h"
 
-#include<Shape.h>
-
 Game::Game()
 {
     m_window.create(VideoMode(800, 600), "PSNBC");
     m_window.setFramerateLimit(60);
 
-    MyShape* shape = new MyShape(0, 0);
-    m_entityManager.addEntity(shape);
+    m_player = new Player();
+    m_entityManager.addEntity(m_player);
 
     m_mapManager = new MapManager(&m_entityManager);
     m_mapManager->generateMap();
+
+    m_collisionManager = new CollisionManager(&m_entityManager);
 }
 
 void Game::update()
@@ -31,6 +31,8 @@ void Game::update()
         Time frameTime = m_frameClock.restart();
 
         m_entityManager.beforeDraw(frameTime);
+
+        m_collisionManager->update(m_player);
 
         m_window.clear();
 

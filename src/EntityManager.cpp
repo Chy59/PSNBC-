@@ -36,3 +36,8 @@ void EntityManager::afterDraw()
         }
     }
 }
+
+vector<Entity*> EntityManager::getEntities()
+{
+    return m_entities;
+}

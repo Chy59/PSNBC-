@@ -15,7 +15,9 @@ class Entity
         virtual ~Entity();
         virtual void update(Time frameTime);
         virtual void draw(RenderWindow& window);
+        virtual FloatRect getBoundBox();
         bool m_destroy;
+        bool m_hasCollisions;
     protected:
     private:
 };

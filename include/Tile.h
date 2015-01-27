@@ -9,6 +9,7 @@ class Tile : public Entity
         Tile(float x, float y, int tileX, int tileY, Texture& texture, int gridSize);
         virtual void draw(RenderWindow& window);
         IntRect getTileById(int tileX, int tileY, int gridSize);
+        virtual FloatRect getBoundBox();
     protected:
     private:
         Sprite m_sprite;
