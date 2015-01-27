@@ -2,6 +2,7 @@
 
 Player::Player()
 {
+    m_type = "Player";
     m_speed = 140.f;
     m_gravity = 200.f;
     m_jump_max_velocity = 500.f;

@@ -18,6 +18,7 @@ class Entity
         virtual FloatRect getBoundBox();
         bool m_destroy;
         bool m_hasCollisions;
+        string m_type;
     protected:
     private:
 };

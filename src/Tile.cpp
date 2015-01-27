@@ -2,6 +2,7 @@
 
 Tile::Tile(float x, float y, int tileX, int tileY, Texture& texture, int gridSize)
 {
+    m_type = "Tile";
     m_sprite.setTexture(texture);
     m_sprite.setTextureRect(this->getTileById(tileX, tileY, gridSize));
     m_sprite.move(x * gridSize, y * gridSize);

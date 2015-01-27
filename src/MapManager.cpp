@@ -7,7 +7,7 @@ MapManager::MapManager(EntityManager* entityManager) :
     m_texture.loadFromFile("assets/tileset-platformer.png");
 }
 
-void MapManager::generateMap(const char* mapName)
+void MapManager::loadMap(const char* mapName)
 {
     ifstream mapFile(mapName);
 
@@ -60,4 +60,9 @@ Vector2f MapManager::getTileById(int tileId)
         x = modf(tileId / columns, &y) * columns;
 
     return Vector2f(x, y);
+}
+
+void MapManager::unloadMap()
+{
+    m_entityManager->clearByType("Tile");
 }

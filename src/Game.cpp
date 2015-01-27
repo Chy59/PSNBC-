@@ -9,7 +9,7 @@ Game::Game()
     m_entityManager.addEntity(m_player);
 
     m_mapManager = new MapManager(&m_entityManager);
-    m_mapManager->generateMap("maps/1.txt");
+    m_mapManager->loadMap("maps/1.txt");
 
     m_collisionManager = new CollisionManager(&m_entityManager);
 }

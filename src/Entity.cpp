@@ -4,6 +4,7 @@ Entity::Entity()
 {
     m_destroy = false;
     m_hasCollisions = false;
+    m_type = "Entity";
 }
 
 void Entity::update(Time frameTime)

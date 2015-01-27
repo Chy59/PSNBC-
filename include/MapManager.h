@@ -13,9 +13,10 @@ class MapManager
 {
     public:
         MapManager(EntityManager* entityManager);
-        void generateMap(const char* mapName);
+        void loadMap(const char* mapName);
         void addTile(float x, float y, int tileId);
         Vector2f getTileById(int tileId);
+        void unloadMap();
     protected:
     private:
         Texture m_texture;

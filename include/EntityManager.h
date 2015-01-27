@@ -12,6 +12,7 @@ class EntityManager
         void draw(RenderWindow& window);
         void afterDraw();
         vector<Entity*> getEntities();
+        void clearByType(const char* type);
     protected:
     private:
         vector<Entity*> m_entities;

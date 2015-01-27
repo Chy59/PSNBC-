@@ -8,7 +8,7 @@ CollisionManager::CollisionManager(EntityManager* entityManager) :
 void CollisionManager::update(Player* player)
 {
     vector<Entity*> entities = m_entityManager->getEntities();
-    for(int i = 0, len = entities.size(); i < len; i++)
+    for(int i = 0, len = entities.size(); i < len; ++i)
     {
         if(entities[i]->m_hasCollisions)
         {
