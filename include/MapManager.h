@@ -5,6 +5,7 @@
 #include <EntityManager.h>
 #include <Tile.h>
 #include <Math.h>
+#include <fstream>
 
 using namespace sf;
 
@@ -12,9 +13,9 @@ class MapManager
 {
     public:
         MapManager(EntityManager* entityManager);
-        void generateMap();
+        void generateMap(const char* mapName);
         void addTile(float x, float y, int tileId);
-        Vector2u getTileById(int tileId);
+        Vector2f getTileById(int tileId);
     protected:
     private:
         Texture m_texture;
