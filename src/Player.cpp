@@ -8,7 +8,7 @@ Player::Player()
     m_jump_deceleration = 10.f;
     m_side = 1;
 
-    m_texture.loadFromFile("player.png");
+    m_texture.loadFromFile("assets/player.png");
 
     m_walkingAnimationRight.setSpriteSheet(m_texture);
     m_walkingAnimationRight.addFrame(IntRect(32, 0, 32, 48));

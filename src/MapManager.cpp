@@ -4,7 +4,7 @@ MapManager::MapManager(EntityManager* entityManager) :
     m_entityManager(entityManager)
 {
     m_gridSize = 32;
-    m_texture.loadFromFile("tileset-platformer.png");
+    m_texture.loadFromFile("assets/tileset-platformer.png");
 }
 
 void MapManager::generateMap(const char* mapName)
