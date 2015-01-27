@@ -12,13 +12,13 @@ class EntityManager
 {
     public:
         EntityManager();
-        vector<Entity*> entities;
         void addEntity(Entity* entity);
         void beforeDraw(Time frameTime);
         void draw(RenderWindow& window);
         void afterDraw();
     protected:
     private:
+        vector<Entity*> m_entities;
 };
 
 #endif // ENTITYMANAGER_H

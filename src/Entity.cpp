@@ -2,7 +2,7 @@
 
 Entity::Entity()
 {
-    destroy = false;
+    m_destroy = false;
 }
 
 void Entity::update(Time frameTime)

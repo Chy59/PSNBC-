@@ -11,10 +11,10 @@ class MyShape : public Entity
         virtual void draw(RenderWindow& window);
     protected:
     private:
-        Texture texture;
-        Animation walkingAnimationDown;
-        Animation* currentAnimation;
-        AnimatedSprite animatedSprite;
+        Texture m_texture;
+        Animation m_walkingAnimationDown;
+        Animation* m_currentAnimation;
+        AnimatedSprite m_animatedSprite;
 };
 
 #endif // SHAPE_H

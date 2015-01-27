@@ -6,33 +6,33 @@ EntityManager::EntityManager()
 
 void EntityManager::addEntity(Entity* entity)
 {
-    entities.push_back(entity);
+    m_entities.push_back(entity);
 }
 
 void EntityManager::beforeDraw(Time frameTime)
 {
-    for(int i = 0, len = entities.size(); i < len; i++)
+    for(int i = 0, len = m_entities.size(); i < len; i++)
     {
-        entities[i]->update(frameTime);
+        m_entities[i]->update(frameTime);
     }
 }
 
 void EntityManager::draw(RenderWindow& window)
 {
-    for(int i = 0, len = entities.size(); i < len; i++)
+    for(int i = 0, len = m_entities.size(); i < len; i++)
     {
-        entities[i]->draw(window);
+        m_entities[i]->draw(window);
     }
 }
 
 void EntityManager::afterDraw()
 {
-    for(int i = 0, len = entities.size(); i < len; i++)
+    for(int i = 0, len = m_entities.size(); i < len; i++)
     {
-        if(entities[i]->destroy)
+        if(m_entities[i]->m_destroy)
         {
-            delete entities[i];
-            entities.erase(entities.begin() + i);
+            delete m_entities[i];
+            m_entities.erase(m_entities.begin() + i);
         }
     }
 }

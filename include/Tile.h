@@ -11,7 +11,7 @@ class Tile : public Entity
         IntRect getTileById(int tileX, int tileY, int gridSize);
     protected:
     private:
-        Sprite sprite;
+        Sprite m_sprite;
 };
 
 #endif // TILE_H

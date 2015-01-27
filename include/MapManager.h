@@ -4,21 +4,22 @@
 #include <SFML/Graphics.hpp>
 #include <EntityManager.h>
 #include <Tile.h>
+#include <Math.h>
 
 using namespace sf;
 
 class MapManager
 {
     public:
-        MapManager();
-        void setEntityManager(EntityManager* em);
+        MapManager(EntityManager* entityManager);
         void generateMap();
-        void addTile(float x, float y, int tileX, int tileY);
+        void addTile(float x, float y, int tileId);
+        Vector2u getTileById(int tileId);
     protected:
     private:
-        Texture texture;
-        int gridSize;
-        EntityManager* entityManager;
+        Texture m_texture;
+        int m_gridSize;
+        EntityManager* m_entityManager;
 };
 
 #endif // MAPMANAGER_H

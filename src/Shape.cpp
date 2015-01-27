@@ -2,27 +2,27 @@
 
 MyShape::MyShape(float x, float y)
 {
-    texture.loadFromFile("player.png");
+    m_texture.loadFromFile("player.png");
 
-    walkingAnimationDown.setSpriteSheet(texture);
-    walkingAnimationDown.addFrame(IntRect(32, 0, 32, 32));
-    walkingAnimationDown.addFrame(IntRect(64, 0, 32, 32));
-    walkingAnimationDown.addFrame(IntRect(32, 0, 32, 32));
-    walkingAnimationDown.addFrame(IntRect( 0, 0, 32, 32));
+    m_walkingAnimationDown.setSpriteSheet(m_texture);
+    m_walkingAnimationDown.addFrame(IntRect(32, 0, 32, 32));
+    m_walkingAnimationDown.addFrame(IntRect(64, 0, 32, 32));
+    m_walkingAnimationDown.addFrame(IntRect(32, 0, 32, 32));
+    m_walkingAnimationDown.addFrame(IntRect( 0, 0, 32, 32));
 
-    currentAnimation = &walkingAnimationDown;
+    m_currentAnimation = &m_walkingAnimationDown;
 
-    animatedSprite.setFrameTime(seconds(0.2));
-    animatedSprite.setPosition(x, y);
+    m_animatedSprite.setFrameTime(seconds(0.2));
+    m_animatedSprite.setPosition(x, y);
 }
 
 void MyShape::update(Time frameTime)
 {
-    animatedSprite.play(*currentAnimation);
-    animatedSprite.update(frameTime);
+    m_animatedSprite.play(*m_currentAnimation);
+    m_animatedSprite.update(frameTime);
 }
 
 void MyShape::draw(RenderWindow& window)
 {
-    window.draw(animatedSprite);
+    window.draw(m_animatedSprite);
 }

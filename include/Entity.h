@@ -15,7 +15,7 @@ class Entity
         virtual ~Entity();
         virtual void update(Time frameTime);
         virtual void draw(RenderWindow& window);
-        bool destroy;
+        bool m_destroy;
     protected:
     private:
 };
