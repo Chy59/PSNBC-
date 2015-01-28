@@ -25,6 +25,7 @@ class Player : public Entity
         float m_jump_max_velocity;
         bool m_jumping;
         float m_jump_deceleration;
+        bool m_canJump;
 };
 
 #endif // PLAYER_H

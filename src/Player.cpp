@@ -9,6 +9,7 @@ Player::Player()
     m_jump_deceleration = 10.f;
     m_side = 1;
     m_jumping = false;
+    m_canJump = false;
 
     m_texture.loadFromFile("assets/player.png");
 
@@ -48,7 +49,7 @@ void Player::update(Time frameTime)
         noKeyWasPressed = false;
     }
 
-    if (Keyboard::isKeyPressed(Keyboard::Up) && !m_jumping)
+    if (Keyboard::isKeyPressed(Keyboard::Up) && !m_jumping && m_canJump)
     {
         m_jumping = true;
         m_jump_velocity = m_jump_max_velocity;
@@ -67,16 +68,14 @@ void Player::update(Time frameTime)
         }
     }
 
+    m_canJump = false;
+
     if (noKeyWasPressed)
     {
         m_animatedSprite.stop();
     }
 
     m_animatedSprite.setScale(1.f * m_side, 1.f);
-
-    cout << "pos " << m_animatedSprite.getPosition().x << " : " << m_animatedSprite.getPosition().y << endl;
-    cout << "move " << movement.x << " : " << movement.y << endl;
-    cout << "frametime " << frameTime.asSeconds() << endl;
 
     m_animatedSprite.move(movement * frameTime.asSeconds());
 
@@ -139,6 +138,7 @@ void Player::collide(Entity* entitiy)
     {
         m_animatedSprite.setPosition(position.x, entitiy->getBoundBox().top - m_animatedSprite.getGlobalBounds().height / 2);
         m_jumping = false;
+        m_canJump = true;
     }
 
     if(mouvement.y < 0 && downSide.intersects(this->getBoundBox()))
