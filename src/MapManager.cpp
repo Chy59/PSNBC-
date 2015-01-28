@@ -1,7 +1,15 @@
 #include "MapManager.h"
 
-MapManager::MapManager(EntityManager* entityManager) :
-    m_entityManager(entityManager)
+int MapManager::m_gridSize;
+Texture MapManager::m_texture;
+MapManager MapManager::m_instance = MapManager();
+
+MapManager& MapManager::Instance()
+{
+    return m_instance;
+}
+
+MapManager::MapManager()
 {
     m_gridSize = 32;
     m_texture.loadFromFile("assets/tileset-platformer.png");
@@ -28,7 +36,7 @@ void MapManager::loadMap(const char* mapName)
             if(line > 0)
             {
                 --line;
-                this->addTile(currentColumn, currentRow, line);
+                MapManager::Instance().addTile(currentColumn, currentRow, line);
             }
 
             if(currentColumn < columns)
@@ -45,8 +53,8 @@ void MapManager::loadMap(const char* mapName)
 
 void MapManager::addTile(float x, float y, int tileId)
 {
-    Vector2f tile = this->getTileById(tileId);
-    m_entityManager->addEntity(new Tile(x, y, tile.x, tile.y, m_texture, m_gridSize));
+    Vector2f tile = MapManager::Instance().getTileById(tileId);
+    EntityManager::Instance().addEntity(new Tile(x, y, tile.x, tile.y, m_texture, m_gridSize));
 }
 
 Vector2f MapManager::getTileById(int tileId)
@@ -64,5 +72,5 @@ Vector2f MapManager::getTileById(int tileId)
 
 void MapManager::unloadMap()
 {
-    m_entityManager->clearByType("Tile");
+    EntityManager::Instance().clearByType("Tile");
 }

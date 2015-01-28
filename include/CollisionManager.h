@@ -7,12 +7,13 @@
 class CollisionManager
 {
     public:
-        CollisionManager(EntityManager* entityManager);
-        void update(Player* player);
-        bool collideAABB(Entity* e1, Entity* e2);
+        static CollisionManager& Instance();
+        static void update(Player* player);
+        static bool collideAABB(Entity* e1, Entity* e2);
     protected:
     private:
-        EntityManager* m_entityManager;
+        CollisionManager();
+        static CollisionManager m_instance;
 };
 
 #endif // COLLISIONMANAGER_H

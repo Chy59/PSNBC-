@@ -1,5 +1,13 @@
 #include "EntityManager.h"
 
+vector<Entity*> EntityManager::m_entities;
+EntityManager EntityManager::m_instance = EntityManager();
+
+EntityManager& EntityManager::Instance()
+{
+    return m_instance;
+}
+
 EntityManager::EntityManager()
 {
 }

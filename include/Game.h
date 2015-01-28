@@ -17,9 +17,6 @@ class Game
     protected:
     private:
         RenderWindow m_window;
-        EntityManager m_entityManager;
-        MapManager* m_mapManager;
-        CollisionManager* m_collisionManager;
         Clock m_frameClock;
         Player* m_player;
 };

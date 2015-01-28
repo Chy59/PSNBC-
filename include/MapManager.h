@@ -12,16 +12,17 @@ using namespace sf;
 class MapManager
 {
     public:
-        MapManager(EntityManager* entityManager);
-        void loadMap(const char* mapName);
-        void addTile(float x, float y, int tileId);
-        Vector2f getTileById(int tileId);
-        void unloadMap();
+        static MapManager& Instance();
+        static void loadMap(const char* mapName);
+        static void addTile(float x, float y, int tileId);
+        static Vector2f getTileById(int tileId);
+        static void unloadMap();
     protected:
     private:
-        Texture m_texture;
-        int m_gridSize;
-        EntityManager* m_entityManager;
+        MapManager();
+        static MapManager m_instance;
+        static Texture m_texture;
+        static int m_gridSize;
 };
 
 #endif // MAPMANAGER_H

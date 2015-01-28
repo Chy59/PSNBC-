@@ -6,12 +6,9 @@ Game::Game()
     m_window.setFramerateLimit(60);
 
     m_player = new Player();
-    m_entityManager.addEntity(m_player);
+    EntityManager::Instance().addEntity(m_player);
 
-    m_mapManager = new MapManager(&m_entityManager);
-    m_mapManager->loadMap("maps/1.txt");
-
-    m_collisionManager = new CollisionManager(&m_entityManager);
+    MapManager::Instance().loadMap("maps/1.txt");
 }
 
 void Game::update()
@@ -30,16 +27,16 @@ void Game::update()
 
         Time frameTime = m_frameClock.restart();
 
-        m_entityManager.beforeDraw(frameTime);
+        EntityManager::Instance().beforeDraw(frameTime);
 
-        m_collisionManager->update(m_player);
+        CollisionManager::Instance().update(m_player);
 
         m_window.clear();
 
-        m_entityManager.draw(m_window);
+        EntityManager::Instance().draw(m_window);
 
         m_window.display();
 
-        m_entityManager.afterDraw();
+        EntityManager::Instance().afterDraw();
     }
 }

@@ -1,18 +1,24 @@
 #include "CollisionManager.h"
 
-CollisionManager::CollisionManager(EntityManager* entityManager) :
-    m_entityManager(entityManager)
+CollisionManager CollisionManager::m_instance = CollisionManager();
+
+CollisionManager& CollisionManager::Instance()
+{
+    return m_instance;
+}
+
+CollisionManager::CollisionManager()
 {
 }
 
 void CollisionManager::update(Player* player)
 {
-    vector<Entity*> entities = m_entityManager->getEntities();
+    vector<Entity*> entities = EntityManager::Instance().getEntities();
     for(int i = 0, len = entities.size(); i < len; ++i)
     {
         if(entities[i]->m_hasCollisions)
         {
-            if(this->collideAABB(entities[i], player))
+            if(CollisionManager::Instance().collideAABB(entities[i], player))
             {
                 player->collide(entities[i]);
             }
