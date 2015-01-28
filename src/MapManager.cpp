@@ -49,12 +49,20 @@ void MapManager::loadMap(const char* mapName)
         }
         mapFile.close();
     }
+
+    MapManager::Instance().addTile(2, 6, 25);
+    MapManager::Instance().addTile(3, 6, 26);
+    MapManager::Instance().addTile(4, 6, 27);
 }
 
 void MapManager::addTile(float x, float y, int tileId)
 {
     Vector2f tile = MapManager::Instance().getTileById(tileId);
-    EntityManager::Instance().addEntity(new Tile(x, y, tile.x, tile.y, m_texture, m_gridSize));
+    Vector2f angle = MapManager::Instance().getTileAngle(tileId);
+    if(angle == Vector2f(0, 0))
+        EntityManager::Instance().addEntity(new Tile(x, y, tile.x, tile.y, m_texture, m_gridSize));
+    else
+        EntityManager::Instance().addEntity(new Slope(x, y, tile.x, tile.y, m_texture, m_gridSize, angle));
 }
 
 Vector2f MapManager::getTileById(int tileId)
@@ -68,6 +76,15 @@ Vector2f MapManager::getTileById(int tileId)
         x = modf(tileId / columns, &y) * columns;
 
     return Vector2f(x, y);
+}
+
+Vector2f MapManager::getTileAngle(int tileId)
+{
+    if(tileId == 25)
+        return Vector2f(1, 1);
+    if(tileId == 27)
+        return Vector2f(-1, 1);
+    return Vector2f(0, 0);
 }
 
 void MapManager::unloadMap()

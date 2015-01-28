@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <EntityManager.h>
-#include <Tile.h>
+#include <Slope.h>
 #include <Math.h>
 #include <fstream>
 
@@ -17,12 +17,13 @@ class MapManager
         static void addTile(float x, float y, int tileId);
         static Vector2f getTileById(int tileId);
         static void unloadMap();
+        static Vector2f getTileAngle(int tileId);
+        static int m_gridSize;
     protected:
     private:
         MapManager();
         static MapManager m_instance;
         static Texture m_texture;
-        static int m_gridSize;
 };
 
 #endif // MAPMANAGER_H

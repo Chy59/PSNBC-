@@ -8,11 +8,10 @@ class Tile : public Entity
     public:
         Tile(float x, float y, int tileX, int tileY, Texture& texture, int gridSize);
         virtual void draw(RenderWindow& window);
-        IntRect getTileById(int tileX, int tileY, int gridSize);
         virtual FloatRect getBoundBox();
     protected:
-    private:
         Sprite m_sprite;
+    private:
 };
 
 #endif // TILE_H
