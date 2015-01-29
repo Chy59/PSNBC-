@@ -10,6 +10,8 @@ Player::Player()
     m_side = 1;
     m_jumping = false;
     m_canJump = false;
+    m_frameToJump = 0;
+    m_requiredFramesToJump = 5;
 
     m_texture.loadFromFile("assets/player.png");
 
@@ -97,44 +99,55 @@ void Player::collide(Entity* entity)
 {
     Vector2f position = m_animatedSprite.getPosition();
     Vector2f mouvement = Vector2f(position.x - m_oldPosition.x, position.y - m_oldPosition.y);
+    float right = m_animatedSprite.getGlobalBounds().left + m_animatedSprite.getGlobalBounds().width;
+    float bottom = m_animatedSprite.getGlobalBounds().top + m_animatedSprite.getGlobalBounds().height;
+    float e_right = entity->getBoundBox().left + entity->getBoundBox().width;
+    float e_bottom = entity->getBoundBox().top + entity->getBoundBox().height;
+    Vector2f overlap;
+    int xfix = 3;
 
-    int margin = 8;
-
-    FloatRect topSide = FloatRect(
-                                  entity->getBoundBox().left,
-                                  entity->getBoundBox().top,
-                                  entity->getBoundBox().width,
-                                  margin
-                                  );
-    FloatRect downSide = FloatRect(
-                                   entity->getBoundBox().left,
-                                   entity->getBoundBox().top + entity->getBoundBox().height - margin,
-                                   entity->getBoundBox().width,
-                                   margin
-                                   );
-    FloatRect leftSide = FloatRect(
-                                   entity->getBoundBox().left,
-                                   entity->getBoundBox().top + margin,
-                                   margin,
-                                   entity->getBoundBox().height - margin * 2
-                                   );
-    FloatRect rightSide = FloatRect(
-                                   entity->getBoundBox().left + entity->getBoundBox().width - margin,
-                                   entity->getBoundBox().top + margin,
-                                   margin,
-                                   entity->getBoundBox().height - margin * 2
-                                   );
-    if(mouvement.x < 0 && rightSide.intersects(this->getBoundBox()))
+    if(right/2 < e_right /2)
     {
-        m_animatedSprite.setPosition(entity->getBoundBox().left + entity->getBoundBox().width + m_animatedSprite.getGlobalBounds().width / 2, position.y);
+        overlap.x = (right - entity->getBoundBox().left) * -1;
+    }
+    else
+    {
+        overlap.x = e_right - m_animatedSprite.getGlobalBounds().left;
     }
 
-    if(mouvement.x > 0 && leftSide.intersects(this->getBoundBox()))
+    if(bottom/2 < e_bottom/2)
     {
-        m_animatedSprite.setPosition(entity->getBoundBox().left - m_animatedSprite.getGlobalBounds().width / 2, position.y);
+        overlap.y = (bottom - entity->getBoundBox().top) * -1;
+    }
+    else
+    {
+        overlap.y = e_bottom - m_animatedSprite.getGlobalBounds().top;
     }
 
-    if(entity->m_type == "Slope")
+    if(fabs(overlap.x) + xfix < fabs(overlap.y))
+    {
+        m_animatedSprite.move(overlap.x, 0);
+    }
+    else
+    {
+        m_animatedSprite.move(0, overlap.y);
+        if(mouvement.y < 0)
+        {
+            m_jump_velocity = 0;
+        }
+        else if(m_animatedSprite.getGlobalBounds().top + m_animatedSprite.getGlobalBounds().height == entity->getBoundBox().top)
+        {
+            m_jumping = false;
+            ++m_frameToJump;
+            if(m_frameToJump == m_requiredFramesToJump)
+            {
+                m_frameToJump = 0;
+                m_canJump = true;
+            }
+        }
+    }
+
+    /*if(entity->m_type == "Slope")
     {
         Slope* slope = dynamic_cast<Slope*>(entity);
         float x = m_animatedSprite.getPosition().x - entity->getBoundBox().left;
@@ -159,18 +172,6 @@ void Player::collide(Entity* entity)
     }
     else
     {
-        if(mouvement.y > 0 && topSide.intersects(this->getBoundBox()))
-        {
-            m_animatedSprite.setPosition(position.x, entity->getBoundBox().top - m_animatedSprite.getGlobalBounds().height / 2);
-            m_jumping = false;
-            m_canJump = true;
-        }
-
-        if(mouvement.y < 0 && downSide.intersects(this->getBoundBox()))
-        {
-            m_animatedSprite.setPosition(position.x, entity->getBoundBox().top + entity->getBoundBox().height + m_animatedSprite.getGlobalBounds().height / 2);
-            m_jump_velocity = 0;
-        }
-    }
+    }*/
 }
 

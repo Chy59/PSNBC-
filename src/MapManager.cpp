@@ -50,9 +50,9 @@ void MapManager::loadMap(const char* mapName)
         mapFile.close();
     }
 
-    MapManager::Instance().addTile(2, 6, 25);
-    MapManager::Instance().addTile(3, 6, 26);
-    MapManager::Instance().addTile(4, 6, 27);
+    //MapManager::Instance().addTile(2, 6, 25);
+    //MapManager::Instance().addTile(3, 6, 26);
+    //MapManager::Instance().addTile(4, 6, 27);
 }
 
 void MapManager::addTile(float x, float y, int tileId)
