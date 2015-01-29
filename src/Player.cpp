@@ -115,13 +115,50 @@ void Player::collide(Entity* entity)
         overlap.x = e_right - m_animatedSprite.getGlobalBounds().left;
     }
 
-    if(bottom/2 < e_bottom/2)
+    // multi collisions ?
+
+    if(entity->m_type == "Slope")
     {
-        overlap.y = (bottom - entity->getBoundBox().top) * -1;
+        Slope* slope = dynamic_cast<Slope*>(entity);
+        float x;
+        if(right/2 < e_right/2)
+        {
+            x = right - entity->getBoundBox().left;
+        }
+        else
+        {
+            x = e_right - m_animatedSprite.getGlobalBounds().left;
+        }
+        if(x < 0)
+            x = 0;
+        if(x > MapManager::m_gridSize)
+            x = MapManager::m_gridSize;
+
+        cout << "collinding with a slope of angle : " << slope->m_angle.x << " " << slope->m_angle.y << endl;
+        cout << "Relative origin x to the tile : " << x << endl;
+        cout << "Y position by slope vector : " << x * slope->m_angle.x << endl;
+        cout << "Current y : " << m_animatedSprite.getPosition().y << endl;
+        cout << "New y : " << e_bottom - x * slope->m_angle.x - m_animatedSprite.getGlobalBounds().height/2 - slope->m_angle.y << endl;
+
+        // fix left half slopes
+
+        // add base y (half tile ?) slope starting at custom height
+        // avoid sticky mod (as soon as player enter in collision, he is swaped to y pos, do ony if player.y > block.y
+        // allow jump on slope
+
+        m_animatedSprite.setPosition(position.x, e_bottom - x * slope->m_angle.x - m_animatedSprite.getGlobalBounds().height/2 - slope->m_angle.y);
+        overlap.y = 0;
     }
     else
     {
-        overlap.y = e_bottom - m_animatedSprite.getGlobalBounds().top;
+        if(bottom/2 < e_bottom/2)
+        {
+            overlap.y = (bottom - entity->getBoundBox().top) * -1;
+        }
+        else
+        {
+            overlap.y = e_bottom - m_animatedSprite.getGlobalBounds().top;
+        }
     }
 
     if(fabs(overlap.x) + xfix < fabs(overlap.y))
@@ -146,32 +183,5 @@ void Player::collide(Entity* entity)
             }
         }
     }
-
-    /*if(entity->m_type == "Slope")
-    {
-        Slope* slope = dynamic_cast<Slope*>(entity);
-        float x = m_animatedSprite.getPosition().x - entity->getBoundBox().left;
-        if(x < 0)
-            x = 0;
-        if(x > MapManager::m_gridSize)
-            x = MapManager::m_gridSize;
-
-        if(slope->m_angle.x == -1)
-            x -= MapManager::m_gridSize;
-
-        float newY = entity->getBoundBox().top + entity->getBoundBox().height - x * slope->m_angle.x - m_animatedSprite.getGlobalBounds().height / 2;
-
-        cout << "collinding with a slope of angle : " << slope->m_angle.x << " " << slope->m_angle.y << endl;
-        cout << "Relative origin x to the tile : " << x << endl;
-        cout << "Y position by slope vector : " << x * slope->m_angle.x << endl;
-        cout << "Current y : " << m_animatedSprite.getPosition().y << endl;
-        cout << "New y : " << newY << endl;
-
-        if(newY < m_animatedSprite.getPosition().y)
-            m_animatedSprite.setPosition(position.x, newY);
-    }
-    else
-    {
-    }*/
 }
 

@@ -49,10 +49,6 @@ void MapManager::loadMap(const char* mapName)
         }
         mapFile.close();
     }
-
-    //MapManager::Instance().addTile(2, 6, 25);
-    //MapManager::Instance().addTile(3, 6, 26);
-    //MapManager::Instance().addTile(4, 6, 27);
 }
 
 void MapManager::addTile(float x, float y, int tileId)
@@ -81,9 +77,17 @@ Vector2f MapManager::getTileById(int tileId)
 Vector2f MapManager::getTileAngle(int tileId)
 {
     if(tileId == 25)
-        return Vector2f(1, 1);
+        return Vector2f(1, 0);
     if(tileId == 27)
-        return Vector2f(-1, 1);
+        return Vector2f(1, 0);
+    if(tileId == 96)
+        return Vector2f(0.5, 0);
+    if(tileId == 97)
+        return Vector2f(0.5, 16);
+    if(tileId == 98)
+        return Vector2f(0.5, 16);
+    if(tileId == 99)
+        return Vector2f(0.5, 0);
     return Vector2f(0, 0);
 }
 
