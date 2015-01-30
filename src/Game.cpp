@@ -8,7 +8,7 @@ Game::Game()
     m_player = new Player();
     EntityManager::getInstance().addEntity(m_player);
 
-    MapManager::getInstance().loadMap("maps/1.txt");
+    MapManager::getInstance().loadMap("maps/map1.json");
 }
 
 void Game::update()

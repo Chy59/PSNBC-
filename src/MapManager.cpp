@@ -12,42 +12,44 @@ MapManager& MapManager::getInstance()
 MapManager::MapManager()
 {
     m_gridSize = 32;
-    m_texture.loadFromFile("assets/tileset-platformer.png");
+    m_texture.loadFromFile("images/tileset-platformer.png");
 }
 
 void MapManager::loadMap(const char* mapName)
 {
-    ifstream mapFile(mapName);
+    Json::Value root;
+    Json::Reader reader;
 
-    int columns;
+    ifstream document(mapName, ifstream::binary);
+    bool parsingSuccessful = reader.parse( document, root );
+
+    if ( !parsingSuccessful )
+    {
+        cout  << "Failed to parse configuration\n" << reader.getFormattedErrorMessages();
+    }
+
+    Json::Value layers = root["layers"];
+    Json::Value tiles = layers[0]["data"];
+
+    int columns = layers[0].get("width", 0).asInt() - 1;
     int currentColumn = 0;
     int currentRow = 0;
 
-    if(mapFile.is_open())
+    for ( int index = 0, len = tiles.size(); index < len; ++index )
     {
-        mapFile >> columns;
-        --columns;
-
-        while(!mapFile.eof())
+        int line = tiles[index].asInt();
+        if(line > 0)
         {
-            int line;
-            mapFile >> line;
-
-            if(line > 0)
-            {
-                --line;
-                MapManager::getInstance().addTile(currentColumn, currentRow, line);
-            }
-
-            if(currentColumn < columns)
-                ++currentColumn;
-            else
-            {
-                currentColumn = 0;
-                ++currentRow;
-            }
+            --line;
+            MapManager::getInstance().addTile(currentColumn, currentRow, line);
         }
-        mapFile.close();
+        if(currentColumn < columns)
+            ++currentColumn;
+        else
+        {
+            currentColumn = 0;
+            ++currentRow;
+        }
     }
 }
 

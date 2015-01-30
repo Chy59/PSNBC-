@@ -7,6 +7,8 @@
 #include <Math.h>
 #include <fstream>
 
+#include <json/json.h>
+
 using namespace sf;
 
 class MapManager

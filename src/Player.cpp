@@ -11,7 +11,7 @@ Player::Player()
     m_jumping = false;
     m_canJump = false;
 
-    m_texture.loadFromFile("assets/player.png");
+    m_texture.loadFromFile("images/player.png");
 
     m_walkingAnimationRight.setSpriteSheet(m_texture);
     m_walkingAnimationRight.addFrame(IntRect(32, 0, 32, 48));
