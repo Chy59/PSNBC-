@@ -17,7 +17,9 @@ class MapManager
         static void addTile(float x, float y, int tileId);
         static Vector2f getTileById(int tileId);
         static void unloadMap();
-        static Vector2f getTileAngle(int tileId);
+        static float getTileAngle(int tileId);
+        static int getTileBaseY(int tileId);
+        static bool getTileSide(int tileId);
         static int m_gridSize;
     protected:
     private:

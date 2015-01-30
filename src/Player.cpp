@@ -105,7 +105,7 @@ void Player::collide(Entity* entity)
     float e_top = entity->top();
     float e_left = entity->left();
     Vector2f overlap = Vector2f(0, 0);
-    int x_fix = 3;
+    int x_fix = 4;
     bool slope_collision = false;
 
     if(right/2 < e_right/2)
@@ -117,33 +117,55 @@ void Player::collide(Entity* entity)
         overlap.x = e_right - left;
     }
 
-    // multi collisions ?
-
     if(entity->m_type == "Slope")
     {
         slope_collision = true;
         Slope* slope = dynamic_cast<Slope*>(entity);
         float x;
-        if(right/2 < e_right/2)
+
+        if(slope->m_inverted)
         {
-            x = right - e_left;
+            if(slope->m_angle >= 0)
+                x = right - e_left;
+            else
+                x = e_right - left;
         }
         else
         {
-            x = e_right - left;
+            if(slope->m_angle < 0)
+                x = right - e_left;
+            else
+                x = e_right - left;
         }
+
         if(x < 0)
             x = 0;
         if(x > MapManager::m_gridSize)
             x = MapManager::m_gridSize;
 
-        float newY = e_bottom - x * slope->m_angle.x - m_animatedSprite.getGlobalBounds().height/2 - slope->m_angle.y;
-
-        if(newY < m_animatedSprite.getPosition().y)
+        if(slope->m_inverted)
         {
-            m_animatedSprite.setPosition(m_animatedSprite.getPosition().x, newY);
-            overlap.y = 0;
-            m_canJump = true;
+            float newY = e_top + x * fabs(slope->m_angle) + m_animatedSprite.getGlobalBounds().height/2 + slope->m_base_y;
+            if(newY > m_animatedSprite.getPosition().y)
+            {
+                //m_animatedSprite.setPosition(m_animatedSprite.getPosition().x, newY);
+                //overlap.y = 0;
+                overlap.y = newY - m_animatedSprite.getPosition().y;
+                m_jump_velocity = 0;
+                m_jumping = false;
+            }
+
+        }
+        else
+        {
+            float newY = e_bottom - x * fabs(slope->m_angle) - m_animatedSprite.getGlobalBounds().height/2 - slope->m_base_y;
+            if(newY < m_animatedSprite.getPosition().y)
+            {
+                //m_animatedSprite.setPosition(m_animatedSprite.getPosition().x, newY);
+                //overlap.y = 0;
+                overlap.y = newY - m_animatedSprite.getPosition().y;
+                m_canJump = true;
+            }
         }
     }
     else

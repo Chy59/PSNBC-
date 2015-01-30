@@ -6,8 +6,10 @@
 class Slope : public Tile
 {
     public:
-        Slope(float x, float y, int tileX, int tileY, Texture& texture, int gridSize, Vector2f angle);
-        Vector2f m_angle;
+        Slope(float x, float y, int tileX, int tileY, Texture& texture, int gridSize, float angle, int base_y, bool inverted);
+        float m_angle;
+        int m_base_y;
+        bool m_inverted;
     protected:
     private:
 };
