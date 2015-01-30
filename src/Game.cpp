@@ -37,4 +37,6 @@ void Game::update()
 
         EntityManager::getInstance().afterDraw();
     }
+
+    AssetsManager::getInstance().close();
 }

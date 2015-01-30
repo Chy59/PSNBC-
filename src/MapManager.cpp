@@ -12,20 +12,19 @@ MapManager& MapManager::getInstance()
 MapManager::MapManager()
 {
     m_gridSize = 32;
-    m_texture.loadFromFile("images/tileset-platformer.png");
+    m_texture = AssetsManager::getInstance().getTexture("images/tileset-platformer.png");
 }
 
-void MapManager::loadMap(const char* mapName)
+void MapManager::loadMap(const char* map_name)
 {
     Json::Value root;
     Json::Reader reader;
 
-    ifstream document(mapName, ifstream::binary);
-    bool parsingSuccessful = reader.parse( document, root );
+    bool parsingSuccessful = reader.parse( AssetsManager::getInstance().getFile(map_name), root );
 
-    if ( !parsingSuccessful )
+    if(!parsingSuccessful)
     {
-        cout  << "Failed to parse configuration\n" << reader.getFormattedErrorMessages();
+        cout << "Failed to parse configuration" << endl << reader.getFormattedErrorMessages() << endl;
     }
 
     Json::Value layers = root["layers"];
@@ -37,7 +36,7 @@ void MapManager::loadMap(const char* mapName)
     int currentColumn = 0;
     int currentRow = 0;
 
-    for ( int index = 0, len = tiles.size(); index < len; ++index )
+    for(int index = 0, len = tiles.size(); index < len; ++index)
     {
         int line = tiles[index].asInt();
         if(line > 0)

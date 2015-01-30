@@ -6,8 +6,8 @@
 #include <EntityManager.h>
 #include <Slope.h>
 #include <Math.h>
-#include <fstream>
 #include <json/json.h>
+#include <AssetsManager.h>
 
 using namespace sf;
 
