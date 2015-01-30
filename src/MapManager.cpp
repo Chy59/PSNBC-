@@ -88,6 +88,8 @@ Vector2f MapManager::getTileAngle(int tileId)
         return Vector2f(0.5, 16);
     if(tileId == 99)
         return Vector2f(0.5, 0);
+    if(tileId == 100)
+        return Vector2f(0, 16);
     return Vector2f(0, 0);
 }
 

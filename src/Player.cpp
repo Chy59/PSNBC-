@@ -10,8 +10,6 @@ Player::Player()
     m_side = 1;
     m_jumping = false;
     m_canJump = false;
-    m_frameToJump = 0;
-    m_requiredFramesToJump = 5;
 
     m_texture.loadFromFile("assets/player.png");
 
@@ -67,6 +65,7 @@ void Player::update(Time frameTime)
         else
         {
             m_jump_velocity = 0;
+            m_jumping = false;
         }
     }
 
@@ -97,90 +96,83 @@ FloatRect Player::getBoundBox()
 
 void Player::collide(Entity* entity)
 {
-    Vector2f position = m_animatedSprite.getPosition();
-    Vector2f mouvement = Vector2f(position.x - m_oldPosition.x, position.y - m_oldPosition.y);
-    float right = m_animatedSprite.getGlobalBounds().left + m_animatedSprite.getGlobalBounds().width;
-    float bottom = m_animatedSprite.getGlobalBounds().top + m_animatedSprite.getGlobalBounds().height;
-    float e_right = entity->getBoundBox().left + entity->getBoundBox().width;
-    float e_bottom = entity->getBoundBox().top + entity->getBoundBox().height;
-    Vector2f overlap;
-    int xfix = 3;
+    float right = this->right();
+    float bottom = this->bottom();
+    float left = this->left();
+    float top = this->top();
+    float e_right = entity->right();
+    float e_bottom = entity->bottom();
+    float e_top = entity->top();
+    float e_left = entity->left();
+    Vector2f overlap = Vector2f(0, 0);
+    int x_fix = 3;
+    bool slope_collision = false;
 
-    if(right/2 < e_right /2)
+    if(right/2 < e_right/2)
     {
-        overlap.x = (right - entity->getBoundBox().left) * -1;
+        overlap.x = (right - e_left) * -1;
     }
     else
     {
-        overlap.x = e_right - m_animatedSprite.getGlobalBounds().left;
+        overlap.x = e_right - left;
     }
 
     // multi collisions ?
 
     if(entity->m_type == "Slope")
     {
+        slope_collision = true;
         Slope* slope = dynamic_cast<Slope*>(entity);
         float x;
         if(right/2 < e_right/2)
         {
-            x = right - entity->getBoundBox().left;
+            x = right - e_left;
         }
         else
         {
-            x = e_right - m_animatedSprite.getGlobalBounds().left;
+            x = e_right - left;
         }
         if(x < 0)
             x = 0;
         if(x > MapManager::m_gridSize)
             x = MapManager::m_gridSize;
 
-        cout << "collinding with a slope of angle : " << slope->m_angle.x << " " << slope->m_angle.y << endl;
-        cout << "Relative origin x to the tile : " << x << endl;
-        cout << "Y position by slope vector : " << x * slope->m_angle.x << endl;
-        cout << "Current y : " << m_animatedSprite.getPosition().y << endl;
-        cout << "New y : " << e_bottom - x * slope->m_angle.x - m_animatedSprite.getGlobalBounds().height/2 - slope->m_angle.y << endl;
+        float newY = e_bottom - x * slope->m_angle.x - m_animatedSprite.getGlobalBounds().height/2 - slope->m_angle.y;
 
-        // fix left half slopes
-
-        // add base y (half tile ?) slope starting at custom height
-        // avoid sticky mod (as soon as player enter in collision, he is swaped to y pos, do ony if player.y > block.y
-        // allow jump on slope
-
-        m_animatedSprite.setPosition(position.x, e_bottom - x * slope->m_angle.x - m_animatedSprite.getGlobalBounds().height/2 - slope->m_angle.y);
-        overlap.y = 0;
+        if(newY < m_animatedSprite.getPosition().y)
+        {
+            m_animatedSprite.setPosition(m_animatedSprite.getPosition().x, newY);
+            overlap.y = 0;
+            m_canJump = true;
+        }
     }
     else
     {
         if(bottom/2 < e_bottom/2)
         {
-            overlap.y = (bottom - entity->getBoundBox().top) * -1;
+            overlap.y = (bottom - e_top) * -1;
         }
         else
         {
-            overlap.y = e_bottom - m_animatedSprite.getGlobalBounds().top;
+            overlap.y = e_bottom - top;
         }
     }
 
-    if(fabs(overlap.x) + xfix < fabs(overlap.y))
+    if(fabs(overlap.x) + x_fix < fabs(overlap.y))
     {
         m_animatedSprite.move(overlap.x, 0);
     }
     else
     {
         m_animatedSprite.move(0, overlap.y);
-        if(mouvement.y < 0)
+        if(this->top() == e_bottom)
         {
             m_jump_velocity = 0;
-        }
-        else if(m_animatedSprite.getGlobalBounds().top + m_animatedSprite.getGlobalBounds().height == entity->getBoundBox().top)
-        {
             m_jumping = false;
-            ++m_frameToJump;
-            if(m_frameToJump == m_requiredFramesToJump)
-            {
-                m_frameToJump = 0;
-                m_canJump = true;
-            }
+        }
+        if(this->bottom() == e_top && !slope_collision)
+        {
+            m_canJump = true;
         }
     }
 }

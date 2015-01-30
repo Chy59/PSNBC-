@@ -21,6 +21,26 @@ FloatRect Entity::getBoundBox()
     return boundBox;
 }
 
+float Entity::top()
+{
+    return this->getBoundBox().top;
+}
+
+float Entity::bottom()
+{
+    return this->getBoundBox().top + this->getBoundBox().height;
+}
+
+float Entity::right()
+{
+    return this->getBoundBox().left + this->getBoundBox().width;
+}
+
+float Entity::left()
+{
+    return this->getBoundBox().left;
+}
+
 Entity::~Entity()
 {
 }

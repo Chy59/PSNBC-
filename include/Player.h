@@ -26,8 +26,6 @@ class Player : public Entity
         bool m_jumping;
         float m_jump_deceleration;
         bool m_canJump;
-        int m_frameToJump;
-        int m_requiredFramesToJump;
 };
 
 #endif // PLAYER_H
