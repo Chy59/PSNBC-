@@ -4,7 +4,7 @@ int MapManager::m_gridSize;
 Texture MapManager::m_texture;
 MapManager MapManager::m_instance = MapManager();
 
-MapManager& MapManager::Instance()
+MapManager& MapManager::getInstance()
 {
     return m_instance;
 }
@@ -36,7 +36,7 @@ void MapManager::loadMap(const char* mapName)
             if(line > 0)
             {
                 --line;
-                MapManager::Instance().addTile(currentColumn, currentRow, line);
+                MapManager::getInstance().addTile(currentColumn, currentRow, line);
             }
 
             if(currentColumn < columns)
@@ -53,13 +53,13 @@ void MapManager::loadMap(const char* mapName)
 
 void MapManager::addTile(float x, float y, int tileId)
 {
-    Vector2f tile = MapManager::Instance().getTileById(tileId);
-    float angle = MapManager::Instance().getTileAngle(tileId);
-    int base_y = MapManager::Instance().getTileBaseY(tileId);
+    Vector2f tile = MapManager::getInstance().getTileById(tileId);
+    float angle = MapManager::getInstance().getTileAngle(tileId);
+    int base_y = MapManager::getInstance().getTileBaseY(tileId);
     if(angle == 0 && base_y == 0)
-        EntityManager::Instance().addEntity(new Tile(x, y, tile.x, tile.y, m_texture, m_gridSize));
+        EntityManager::getInstance().addEntity(new Tile(x, y, tile.x, tile.y, m_texture, m_gridSize));
     else
-        EntityManager::Instance().addEntity(new Slope(x, y, tile.x, tile.y, m_texture, m_gridSize, angle, base_y, MapManager::Instance().getTileSide(tileId)));
+        EntityManager::getInstance().addEntity(new Slope(x, y, tile.x, tile.y, m_texture, m_gridSize, angle, base_y, MapManager::getInstance().getTileSide(tileId)));
 }
 
 Vector2f MapManager::getTileById(int tileId)
@@ -176,5 +176,5 @@ bool MapManager::getTileSide(int tileId)
 
 void MapManager::unloadMap()
 {
-    EntityManager::Instance().clearByType("Tile");
+    EntityManager::getInstance().clearByType("Tile");
 }

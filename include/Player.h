@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include <MapManager.h>
+#include <CollisionManager.h>
 
 class Player : public Entity
 {
@@ -11,6 +12,7 @@ class Player : public Entity
         virtual void draw(RenderWindow& window);
         virtual FloatRect getBoundBox();
         void collide(Entity* entity);
+        void doCollisions();
     protected:
     private:
         Texture m_texture;

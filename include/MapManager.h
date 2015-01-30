@@ -12,7 +12,7 @@ using namespace sf;
 class MapManager
 {
     public:
-        static MapManager& Instance();
+        static MapManager& getInstance();
         static void loadMap(const char* mapName);
         static void addTile(float x, float y, int tileId);
         static Vector2f getTileById(int tileId);

@@ -82,6 +82,8 @@ void Player::update(Time frameTime)
 
     m_animatedSprite.play(*m_currentAnimation);
     m_animatedSprite.update(frameTime);
+
+    this->doCollisions();
 }
 
 void Player::draw(RenderWindow& window)
@@ -92,6 +94,21 @@ void Player::draw(RenderWindow& window)
 FloatRect Player::getBoundBox()
 {
     return m_animatedSprite.getGlobalBounds();
+}
+
+void Player::doCollisions()
+{
+    vector<Entity*> entities = EntityManager::getInstance().getEntities();
+    for(int i = 0, len = entities.size(); i < len; ++i)
+    {
+        if(entities[i]->m_hasCollisions)
+        {
+            if(CollisionManager::getInstance().collideAABB(entities[i]->getBoundBox(), this->getBoundBox()))
+            {
+                this->collide(entities[i]);
+            }
+        }
+    }
 }
 
 void Player::collide(Entity* entity)
@@ -148,8 +165,6 @@ void Player::collide(Entity* entity)
             float newY = e_top + x * fabs(slope->m_angle) + m_animatedSprite.getGlobalBounds().height/2 + slope->m_base_y;
             if(newY > m_animatedSprite.getPosition().y)
             {
-                //m_animatedSprite.setPosition(m_animatedSprite.getPosition().x, newY);
-                //overlap.y = 0;
                 overlap.y = newY - m_animatedSprite.getPosition().y;
                 m_jump_velocity = 0;
                 m_jumping = false;
@@ -161,8 +176,6 @@ void Player::collide(Entity* entity)
             float newY = e_bottom - x * fabs(slope->m_angle) - m_animatedSprite.getGlobalBounds().height/2 - slope->m_base_y;
             if(newY < m_animatedSprite.getPosition().y)
             {
-                //m_animatedSprite.setPosition(m_animatedSprite.getPosition().x, newY);
-                //overlap.y = 0;
                 overlap.y = newY - m_animatedSprite.getPosition().y;
                 m_canJump = true;
             }

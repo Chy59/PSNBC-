@@ -2,14 +2,12 @@
 #define COLLISIONMANAGER_H
 
 #include <EntityManager.h>
-#include <Player.h>
 
 class CollisionManager
 {
     public:
-        static CollisionManager& Instance();
-        static void update(Player* player);
-        static bool collideAABB(Entity* e1, Entity* e2);
+        static CollisionManager& getInstance();
+        static bool collideAABB(FloatRect e1, FloatRect e2);
     protected:
     private:
         CollisionManager();

@@ -6,7 +6,7 @@
 class EntityManager
 {
     public:
-        static EntityManager& Instance();
+        static EntityManager& getInstance();
         static void addEntity(Entity* entity);
         static void beforeDraw(Time frameTime);
         static void draw(RenderWindow& window);

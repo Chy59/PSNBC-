@@ -3,7 +3,7 @@
 vector<Entity*> EntityManager::m_entities;
 EntityManager EntityManager::m_instance = EntityManager();
 
-EntityManager& EntityManager::Instance()
+EntityManager& EntityManager::getInstance()
 {
     return m_instance;
 }
