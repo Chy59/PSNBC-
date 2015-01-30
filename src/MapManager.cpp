@@ -30,6 +30,8 @@ void MapManager::loadMap(const char* mapName)
 
     Json::Value layers = root["layers"];
     Json::Value tiles = layers[0]["data"];
+    Json::Value tilesets = root["tilesets"];
+    Json::Value properties = tilesets[0]["tileproperties"];
 
     int columns = layers[0].get("width", 0).asInt() - 1;
     int currentColumn = 0;
@@ -41,7 +43,25 @@ void MapManager::loadMap(const char* mapName)
         if(line > 0)
         {
             --line;
-            MapManager::getInstance().addTile(currentColumn, currentRow, line);
+            ostringstream ss;
+            ss << line;
+            string s_line = ss.str();
+            float angle = 0;
+            int base_y = 0;
+            bool inverted = false;
+            if(properties.isMember(s_line))
+            {
+                string attr;
+                attr = properties[s_line].get("angle", 0).asString();
+                angle = atof(attr.c_str()) * -1;
+
+                attr = properties[s_line].get("y", 0).asString();
+                base_y = atof(attr.c_str());
+
+                attr = properties[s_line].get("inverted", 0).asString();
+                istringstream(attr) >> inverted;
+            }
+            MapManager::getInstance().addTile(currentColumn, currentRow, line, angle, base_y, inverted);
         }
         if(currentColumn < columns)
             ++currentColumn;
@@ -53,15 +73,13 @@ void MapManager::loadMap(const char* mapName)
     }
 }
 
-void MapManager::addTile(float x, float y, int tileId)
+void MapManager::addTile(float x, float y, int tileId, float angle, int base_y, bool side)
 {
     Vector2f tile = MapManager::getInstance().getTileById(tileId);
-    float angle = MapManager::getInstance().getTileAngle(tileId);
-    int base_y = MapManager::getInstance().getTileBaseY(tileId);
     if(angle == 0 && base_y == 0)
         EntityManager::getInstance().addEntity(new Tile(x, y, tile.x, tile.y, m_texture, m_gridSize));
     else
-        EntityManager::getInstance().addEntity(new Slope(x, y, tile.x, tile.y, m_texture, m_gridSize, angle, base_y, MapManager::getInstance().getTileSide(tileId)));
+        EntityManager::getInstance().addEntity(new Slope(x, y, tile.x, tile.y, m_texture, m_gridSize, angle, base_y, side));
 }
 
 Vector2f MapManager::getTileById(int tileId)
@@ -75,105 +93,6 @@ Vector2f MapManager::getTileById(int tileId)
         x = modf(tileId / columns, &y) * columns;
 
     return Vector2f(x, y);
-}
-
-float MapManager::getTileAngle(int tileId)
-{
-    if(tileId == 25)
-        return -1;
-    if(tileId == 27)
-        return 1;
-    if(tileId == 96)
-        return -0.5;
-    if(tileId == 97)
-        return -0.5;
-    if(tileId == 98)
-        return 0.5;
-    if(tileId == 99)
-        return 0.5;
-    if(tileId == 100)
-        return 0;
-     if(tileId == 101)
-        return 1;
-     if(tileId == 102)
-        return 0.5;
-     if(tileId == 103)
-        return 0.5;
-     if(tileId == 104)
-        return -0.5;
-     if(tileId == 105)
-        return -0.5;
-     if(tileId == 106)
-        return 0;
-     if(tileId == 107)
-        return -1;
-    return 0;
-}
-
-int MapManager::getTileBaseY(int tileId)
-{
-    if(tileId == 25)
-        return 0;
-    if(tileId == 27)
-        return 0;
-    if(tileId == 96)
-        return 0;
-    if(tileId == 97)
-        return 16;
-    if(tileId == 98)
-        return 16;
-    if(tileId == 99)
-        return 0;
-    if(tileId == 100)
-        return 16;
-    if(tileId == 101)
-        return 0;
-    if(tileId == 102)
-        return 0;
-    if(tileId == 103)
-        return 16;
-    if(tileId == 104)
-        return 16;
-    if(tileId == 105)
-        return 0;
-    if(tileId == 106)
-        return 16;
-    if(tileId == 107)
-        return 0;
-    return 0;
-}
-
-bool MapManager::getTileSide(int tileId)
-{
-    if(tileId == 25)
-        return false;
-    if(tileId == 27)
-        return false;
-    if(tileId == 96)
-        return false;
-    if(tileId == 97)
-        return false;
-    if(tileId == 98)
-        return false;
-    if(tileId == 99)
-        return false;
-    if(tileId == 100)
-        return false;
-    if(tileId == 101)
-        return true;
-    if(tileId == 102)
-        return true;
-    if(tileId == 103)
-        return true;
-    if(tileId == 104)
-        return true;
-    if(tileId == 105)
-        return true;
-    if(tileId == 106)
-        return true;
-    if(tileId == 107)
-        return true;
-    return false;
 }
 
 void MapManager::unloadMap()
